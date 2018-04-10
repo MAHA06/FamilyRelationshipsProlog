@@ -1,6 +1,19 @@
 man("John").
 man("Mike").
 man("Snoop").
+man("Beavis").
+man("Ben").
+man("Dan").
+man("Bin").
+man("Ahmed").
+man("Khalid").
+man("Moh").
+man("Bander").
+female("Asma").
+female("Abeer").
+female("Reem").
+female("Amal").
+female("Jackie").
 female("Ana").
 female("Betty").
 female("Betty").
@@ -10,9 +23,14 @@ parent("Ana","John").
 parent("Ana","Betty").
 parent("Ana","Mike").
 parent("Mike","Snoop").
-
+parent("Ben","Dan").
+parent("Jackie","Dan").
 parent("Doe","Lizzy").
 parent("Lizzy","Snoop").
+parent("Snoop","Beavis").
+
+parent("Bin","Ana").
+parent("Bin","Ben").
 child(X,Y):-
     parent(Y,X),!.
 
@@ -64,6 +82,49 @@ related(X,Y,Level):-
 
 related(X,Y):-
     related(X,Y,1);related(Y,X,1),!.
+
+grandparent(X,Y):-
+	parent(Z,Y),
+	parent(X,Z).
+
+grandfather(X,Y):-
+	man(X)
+	,grandparent(X,Y).
+
+grandmother(X,Y):-
+	female(X),
+	grandparent(X,Y).
+
+cousin(X,Y):-
+	parent(Z,X),
+	sibling(Z,U),
+	parent(U,Y).
+
+auntOrUncle(X,Y):-
+	parent(Z,Y),
+	sibling(X,Z).
+
+aunt(X,Y):-
+	female(X),
+	auntOrUncle(X,Y).
+
+uncle(X,Y):-
+	man(X),
+	auntOrUncle(X,Y).
+	
+nieceOrNephew(X,Y):-
+	parent(Z,Y),
+	grandparent(Z,X).
+
+niece(X,Y):-
+	female(X),
+	nieceOrNephew(X,Y).
+
+nephew(X,Y):-
+	man(X),
+	nieceOrNephew(X,Y).
+
+
 
 
 allSiblings(X,R):-
