@@ -1,3 +1,4 @@
+:- dynamic visited/1.
 man("John").
 man("Mike").
 man("Snoop").
@@ -17,7 +18,7 @@ female("Jackie").
 female("Ana").
 female("Betty").
 female("Betty").
-female("Doe").
+
 female("Lizzy").
 parent("Ana","John").
 parent("Ana","Betty").
@@ -25,7 +26,7 @@ parent("Ana","Mike").
 parent("Mike","Snoop").
 parent("Ben","Dan").
 parent("Jackie","Dan").
-parent("Doe","Lizzy").
+
 parent("Lizzy","Snoop").
 parent("Snoop","Beavis").
 
@@ -67,21 +68,29 @@ sister(X,Y):-
     female(X),
     sibling(X,Y).
 
+
+	
+
 related(X,X,_).
 
-related(X,Y,Level):-
+related(X,Y,Direction):-
+	Direction>0,
     parent(Z,X),
-      NewLevel is Level+1,
-    related(Z,X,NewLevel).
+    not(visited(Z)),
+    assertz(visited(Z)),
+    related(Z,Y,Direction).
 
-related(X,Y,Level):-
-  Level>1,
-  parent(X,U),
-  NewLevel is Level-1,
-  related(U,Y,NewLevel).  
+ related(X,Y,Direction):-
+  	
+ 	 parent(X,U),
+  	not(visited(U)),
+    assertz(visited(U)),
+ 	 related(U,Y,0). 
 
-related(X,Y):-
-    related(X,Y,1);related(Y,X,1),!.
+
+relatedCheck(X,Y):-
+	retractall(visited(O)),
+    related(X,Y,1).
 
 grandparent(X,Y):-
 	parent(Z,Y),
@@ -125,9 +134,14 @@ nephew(X,Y):-
 	nieceOrNephew(X,Y).
 
 
-
+allAncestors(X,R):-
+	findall(Y,ancestor(Y,X),R).
 
 allSiblings(X,R):-
     findall(Y,sibling(X,Y),R).
+
 allParents(X,R):-
     findall(Y,parent(Y,X),R).
+allRelatives(X,R):-
+
+	findall(Y,relatedCheck(Y,X),R).
