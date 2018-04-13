@@ -1,37 +1,28 @@
 :- dynamic visited/1.
-man("John").
-man("Mike").
-man("Snoop").
-man("Beavis").
-man("Ben").
-man("Dan").
-man("Bin").
+
 man("Ahmed").
 man("Khalid").
 man("Moh").
 man("Bander").
+
 female("Asma").
 female("Abeer").
 female("Reem").
 female("Amal").
-female("Jackie").
-female("Ana").
-female("Betty").
-female("Betty").
 
-female("Lizzy").
-parent("Ana","John").
-parent("Ana","Betty").
-parent("Ana","Mike").
-parent("Mike","Snoop").
-parent("Ben","Dan").
-parent("Jackie","Dan").
+parent("Ahmed","Khalid").
+parent("Asma","Khalid").
+parent("Moh","Ahmed").
+parent("Abeer","Ahmed").
+parent("Moh","Reem").
+parent("Abeer","Reem").
+parent("Ahmed","Amal").
+parent("Asma","Amal").
+parent("Reem","Bander").
 
-parent("Lizzy","Snoop").
-parent("Snoop","Beavis").
 
-parent("Bin","Ana").
-parent("Bin","Ben").
+
+
 child(X,Y):-
     parent(Y,X),!.
 
