@@ -133,6 +133,3 @@ allSiblings(X,R):-
 
 allParents(X,R):-
     findall(Y,parent(Y,X),R).
-allRelatives(X,R):-
-
-	findall(Y,relatedCheck(Y,X),R).
